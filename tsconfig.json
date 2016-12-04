@@ -8,8 +8,5 @@
         "jsx": "react",
         "experimentalDecorators": true,
         "noEmitHelpers": true
-    },
-    "filesGlob": [
-        "./typings/index.d.ts"
-    ]
+    }
 }

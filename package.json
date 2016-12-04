@@ -22,7 +22,9 @@
   "devDependencies": {
     "@types/es6-shim": "^0.31.32",
     "@types/isomorphic-fetch": "^0.0.31",
+    "@types/lodash": "^4.14.41",
     "@types/material-ui": "^0.16.43",
+    "@types/node": "^0.0.2",
     "@types/react-dom": "^0.14.19",
     "@types/react-redux": "^4.4.35",
     "@types/react-router": "^2.0.41",

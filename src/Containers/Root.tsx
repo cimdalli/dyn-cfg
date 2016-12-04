@@ -17,8 +17,13 @@ export default class RootContainer extends React.Component<any, any>{
 
     constructor() {
         super();
-        
+
+        let devTool = (f: Redux.StoreCreator) => {
+            return ((window as any).__REDUX_DEVTOOLS_EXTENSION__) ? (window as any).__REDUX_DEVTOOLS_EXTENSION__ : f
+        }
+
         this.store = new StoreBuilder<StoreState>()
+            .withEnhancer(devTool)
             .withMiddleware(routerMiddleware(hashHistory))
             .withReducer("routing", routerReducer)
             .withReducersMap(reducers)
@@ -29,8 +34,8 @@ export default class RootContainer extends React.Component<any, any>{
 
     render() {
         return (
-            <Provider store={ this.store }>
-                <Router history={ this.history } routes={ routes } />
+            <Provider store={this.store}>
+                <Router history={this.history} routes={routes} />
             </Provider>
         );
     }
