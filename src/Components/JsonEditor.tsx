@@ -2,8 +2,10 @@ import * as React from "react"
 import * as _ from 'lodash'
 
 import { List, ListItem } from 'material-ui/List';
+import Toggle from 'material-ui/Toggle';
 
 interface JsonEditorProps extends __MaterialUI.Table.TableProps {
+    parentKey: string;
     value: any;
     onChange: (data: any) => void;
 }
@@ -13,18 +15,39 @@ export default class JsonEditor extends React.Component<JsonEditorProps, any> {
         super();
 
         this.getItems = this.getItems.bind(this);
+        this.combineKeys = this.combineKeys.bind(this);
+        this.changeItem = this.changeItem.bind(this);
     }
 
-    getItems(value: any) {
-        if (_.isObject(value)) {
-            return _.map(value, (v, k) => {
-                let nested: any = this.getItems(v);
-                let isNested: boolean = _.isArray(nested);
-                return (<ListItem key={k} primaryText={k.toString()} nestedItems={isNested ? nested : []} />)
+    combineKeys(...keys: string[]) {
+        return keys.join(".");
+    }
+
+    changeItem(selector: string, value: any) {
+        this.props.value[selector] = value;
+    }
+
+    getItems(items: any, parentKey: string) {
+        if (_.isObject(items)) {
+            return _.map(items, (v, k) => {
+                let key = this.combineKeys(parentKey, k.toString());
+                let item: any = this.getItems(v, key);
+                let isItemArray: boolean = _.isArray(item);
+                let isItemBoolean: boolean = _.isBoolean(item);
+                return (
+                    <ListItem
+                        key={key}
+                        primaryText={k.toString()}
+                        secondaryText={isItemArray ? "..." : item.toString()}
+                        rightToggle={isItemBoolean ? <Toggle defaultToggled={item} onToggle={() => this.changeItem(key, !item)} /> : null}
+                        nestedItems={isItemArray ? item : []}
+                        primaryTogglesNestedList={true}
+                        />
+                )
             })
         }
         else {
-            return value;
+            return items;
         }
 
     }
@@ -32,7 +55,7 @@ export default class JsonEditor extends React.Component<JsonEditorProps, any> {
     render() {
         return (
             <List>
-                {this.getItems(this.props.value)}
+                {this.getItems({ "": this.props.value }, this.props.parentKey)}
             </List>
         );
     }

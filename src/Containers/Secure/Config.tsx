@@ -2,6 +2,7 @@ import * as React from 'react'
 import * as _ from 'lodash'
 
 import { Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn } from 'material-ui/Table'
+import Chip from 'material-ui/Chip'
 
 import { connect } from 'react-redux'
 import { Dispatch } from "redux"
@@ -48,9 +49,11 @@ class ConfigContainer extends React.Component<ConfigProps, any> {
                     {
                         _.map(this.props.configs, (value: any, key: any) => (
                             <TableRow key={key} selectable={false}>
-                                <TableRowColumn style={applicationColumnStyle}>{key}</TableRowColumn>
+                                <TableRowColumn style={applicationColumnStyle}>
+                                    <Chip>{key}</Chip>
+                                </TableRowColumn>
                                 <TableRowColumn>
-                                    <JsonEditor value={value} onChange={this.logChange} />
+                                    <JsonEditor parentKey={key} value={value} onChange={this.logChange} />
                                 </TableRowColumn>
                             </TableRow>
                         ))
