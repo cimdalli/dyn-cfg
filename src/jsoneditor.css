@@ -1,0 +1,65 @@
+div.jsoneditor{
+    border: none;
+}
+
+div.jsoneditor-menu > .title{
+    display: inline-block;
+    /*padding-top: 8px;*/
+    /*padding-left: 10px;*/
+    /*color: #cccccc;*/
+}
+
+div.jsoneditor-menu{
+    background-color: rgba(21, 97, 134, 0.18);
+    border-bottom: none;
+}
+
+table.jsoneditor-search div.jsoneditor-frame{
+    background-color: rgba(0, 150, 136, 0.18);
+}
+
+table.jsoneditor-search input, table.jsoneditor-search div.jsoneditor-results{
+    color: #d4d4d4;
+}
+
+div.jsoneditor-field, div.jsoneditor-value, div.jsoneditor td, div.jsoneditor th, div.jsoneditor textarea, .jsoneditor-schema-error{
+    /*color: #dfdede;*/
+    color: #828181;
+}
+
+div.jsoneditor-value.jsoneditor-string{
+    color: #d3d3d3;
+}
+
+div.jsoneditor-field[contenteditable=true]:focus, div.jsoneditor-field[contenteditable=true]:hover, div.jsoneditor-value[contenteditable=true]:focus, div.jsoneditor-value[contenteditable=true]:hover, div.jsoneditor-field.jsoneditor-highlight, div.jsoneditor-value.jsoneditor-highlight{
+    /*background-color: #5e5e5e;
+    border: 1px solid #9a9a9a;*/
+    background-color: rgba(0, 0, 0, 0.15);
+    border: 1px solid #5b5b5b;
+}
+
+tr.jsoneditor-highlight, tr.jsoneditor-selected{
+    /*background-color: #454545;*/
+    background-color: #262626;
+}
+
+div.jsoneditor-tree button:focus{
+    background-color: #3a3a3a;
+    outline: 1px solid #535353 ;
+}
+
+div.jsoneditor-tree button.jsoneditor-contextmenu{
+    background-position: -48px -48px;
+}
+
+div.jsoneditor-tree button.jsoneditor-contextmenu:hover, div.jsoneditor-tree button.jsoneditor-contextmenu:focus, div.jsoneditor-tree button.jsoneditor-contextmenu.jsoneditor-selected, tr.jsoneditor-selected.jsoneditor-first button.jsoneditor-contextmenu{
+    background-position: -48px -72px;
+}
+
+div.jsoneditor-tree button.jsoneditor-dragarea{
+    background-position: -72px -48px;
+}
+
+div.jsoneditor-tree button.jsoneditor-dragarea:hover, div.jsoneditor-tree button.jsoneditor-dragarea:focus, tr.jsoneditor-selected.jsoneditor-first button.jsoneditor-dragarea{
+    background-position: -72px -72px;
+}

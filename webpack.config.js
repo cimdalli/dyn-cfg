@@ -25,6 +25,7 @@ const config = {
     },
     devtool: 'eval',
     plugins: [
+        new webpack.IgnorePlugin(/regenerator|nodent|js\-beautify/, /ajv/),
         // Enables Hot Modules Replacement
         new webpack.HotModuleReplacementPlugin(),
         // Allows error warnings but does not stop compiling.
@@ -41,11 +42,23 @@ const config = {
                 test: /\.tsx?$/,
                 exclude: /(node_modules)/,
                 loaders: ['react-hot-loader/webpack', 'ts-loader']
+            },
+            {
+                test: /\.json$/,
+                loader: 'json'
+            },
+            {
+                test: /\.css$/,
+                loader: 'css'
+            },
+            {
+                test: /\.(jpe?g|png|gif|svg)$/i,
+                loader: 'url?limit=10000!img?progressive=true'
             }
         ]
     },
     resolve: {
-        extensions: ["", ".webpack.js", ".web.js", ".ts", ".tsx", ".js", ".css"]
+        extensions: ["", ".webpack.js", ".web.js", ".ts", ".tsx", ".js", ".css", ".png"]
     },
 };
 

@@ -4,59 +4,70 @@ import * as _ from 'lodash'
 import { List, ListItem } from 'material-ui/List';
 import Toggle from 'material-ui/Toggle';
 
-interface JsonEditorProps extends __MaterialUI.Table.TableProps {
-    parentKey: string;
-    value: any;
-    onChange: (data: any) => void;
+var JSONEditor = require('jsoneditor');
+require('!style!css!jsoneditor/dist/jsoneditor.css');
+require('!style!css!../jsoneditor.css');
+
+
+interface JsonEditorProps {
+    json: Object | Array<any>
+    title?: string;
 }
 
 export default class JsonEditor extends React.Component<JsonEditorProps, any> {
-    constructor() {
-        super();
 
-        this.getItems = this.getItems.bind(this);
-        this.combineKeys = this.combineKeys.bind(this);
-        this.changeItem = this.changeItem.bind(this);
+    editor: any;
+    editorRef: HTMLDivElement;
+
+    constructor(props: any) {
+        super(props);
+
+        this.state = {
+            json: Object.assign({}, props.json),
+        };
+
+        this.editor = null;
+        this.editorRef = null;
     }
 
-    combineKeys(...keys: string[]) {
-        return keys.join(".");
+    componentDidMount() {
+        this.editor = new JSONEditor(this.editorRef, {
+            mode: 'tree',
+            onChange: this.handleChange,
+        });
+
+        var title = document.createElement("div");
+        title.className = "title";
+        title.innerText = this.props.title;
+
+        this.editorRef.getElementsByClassName("jsoneditor-redo")[0].insertAdjacentElement("afterEnd", title);
+        this.editor.set(this.props.json);
     }
 
-    changeItem(selector: string, value: any) {
-        this.props.value[selector] = value;
+    componentWillReceiveProps(nextProps: any) {
+        this.editor.set(nextProps.json);
+        this.setState({
+            json: nextProps.json,
+        });
     }
 
-    getItems(items: any, parentKey: string) {
-        if (_.isObject(items)) {
-            return _.map(items, (v, k) => {
-                let key = this.combineKeys(parentKey, k.toString());
-                let item: any = this.getItems(v, key);
-                let isItemArray: boolean = _.isArray(item);
-                let isItemBoolean: boolean = _.isBoolean(item);
-                return (
-                    <ListItem
-                        key={key}
-                        primaryText={k.toString()}
-                        secondaryText={isItemArray ? "..." : item.toString()}
-                        rightToggle={isItemBoolean ? <Toggle defaultToggled={item} onToggle={() => this.changeItem(key, !item)} /> : null}
-                        nestedItems={isItemArray ? item : []}
-                        primaryTogglesNestedList={true}
-                        />
-                )
-            })
+    componentWillUnmount() {
+        this.editor.destroy();
+    }
+
+    handleChange = () => {
+        try {
+            this.setState({
+                json: this.editor.get(),
+            });
+        } catch (e) {
+            console.error(e);
         }
-        else {
-            return items;
-        }
-
     }
 
     render() {
         return (
-            <List>
-                {this.getItems({ "": this.props.value }, this.props.parentKey)}
-            </List>
+            <div ref={(ref) => { this.editorRef = ref; } } />
         );
     }
 }

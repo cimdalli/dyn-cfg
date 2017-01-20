@@ -41,19 +41,15 @@ class ConfigContainer extends React.Component<ConfigProps, any> {
             <Table>
                 <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
                     <TableRow>
-                        <TableHeaderColumn style={applicationColumnStyle}>Application</TableHeaderColumn>
-                        <TableHeaderColumn>Data</TableHeaderColumn>
+                        <TableHeaderColumn style={{ textAlign: "center" }}>Configs</TableHeaderColumn>
                     </TableRow>
                 </TableHeader>
                 <TableBody displayRowCheckbox={false}>
                     {
                         _.map(this.props.configs, (value: any, key: any) => (
                             <TableRow key={key} selectable={false}>
-                                <TableRowColumn style={applicationColumnStyle}>
-                                    <Chip>{key}</Chip>
-                                </TableRowColumn>
                                 <TableRowColumn>
-                                    <JsonEditor parentKey={key} value={value} onChange={this.logChange} />
+                                    <JsonEditor json={value} title={key} />
                                 </TableRowColumn>
                             </TableRow>
                         ))
