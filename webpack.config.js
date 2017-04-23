@@ -1,65 +1,56 @@
 const webpack = require('webpack');
 const path = require('path');
-const buildPath = path.resolve(__dirname, 'build');
-const TransferWebpackPlugin = require('transfer-webpack-plugin');
 
-const config = {
-    // Entry points to the project
+module.exports = {
     entry: [
-        'webpack/hot/dev-server',
+        'react-hot-loader/patch',
         'webpack/hot/only-dev-server',
-        path.join(__dirname, '/src/app.tsx')
+        './src/app.tsx'
     ],
     output: {
-        path: buildPath, // Path of output file
         filename: 'app.js',
+        path: path.resolve('dist/dev')
     },
-    // Server Configuration options
     devServer: {
-        contentBase: 'src', // Relative directory for base of server
-        devtool: 'eval',
+        contentBase: 'public',
         hot: true, // Live-reload
-        inline: true,
-        port: 4001, // Port Number
-        host: 'localhost', // Change to '0.0.0.0' for external facing server
+        port: 4001
     },
-    devtool: 'eval',
+    devtool: 'source-map',
     plugins: [
-        new webpack.IgnorePlugin(/regenerator|nodent|js\-beautify/, /ajv/),
-        // Enables Hot Modules Replacement
+        new webpack.NamedModulesPlugin(),
         new webpack.HotModuleReplacementPlugin(),
-        // Allows error warnings but does not stop compiling.
-        new webpack.NoErrorsPlugin(),
-        // Moves files
-        new TransferWebpackPlugin([
-            { from: '' },
-        ], path.resolve(__dirname, 'src')),
-        new webpack.PrefetchPlugin("react")
+        new webpack.PrefetchPlugin("process/browser"),
+        new webpack.PrefetchPlugin("strip-ansi/index"),
+        new webpack.PrefetchPlugin("url/url"),
+        new webpack.PrefetchPlugin("webpack/hot/log-apply-result"),
+        new webpack.PrefetchPlugin("react-tap-event-plugin/src/injectTapEventPlugin"),
+        new webpack.PrefetchPlugin("react/react")
     ],
     module: {
-        loaders: [
+        rules: [
             {
-                test: /\.tsx?$/,
-                exclude: /(node_modules)/,
-                loaders: ['react-hot-loader/webpack', 'ts-loader']
-            },
-            {
-                test: /\.json$/,
-                loader: 'json'
+                test: /\.(ico|png|jpg|jpeg|gif|svg|woff|woff2|eot|ttf|otf)$/,
+                loader: 'url-loader',
+                query: {
+                    name: '[path][name].[ext]'
+                }
             },
             {
                 test: /\.css$/,
-                loader: 'css'
+                use: ['style-loader', 'css-loader']
             },
             {
-                test: /\.(jpe?g|png|gif|svg)$/i,
-                loader: 'url?limit=10000!img?progressive=true'
+                test: /\.tsx?$/,
+                exclude: /(node_modules)/,
+                use: [
+                    { loader: 'react-hot-loader/webpack' },
+                    { loader: 'ts-loader' }
+                ]
             }
-        ]
+        ],
     },
     resolve: {
-        extensions: ["", ".webpack.js", ".web.js", ".ts", ".tsx", ".js", ".css", ".png"]
-    },
+        extensions: [".ts", ".tsx", ".js", ".css"]
+    }
 };
-
-module.exports = config;

@@ -5,9 +5,6 @@ import { List, ListItem } from 'material-ui/List';
 import Toggle from 'material-ui/Toggle';
 
 var JSONEditor = require('jsoneditor');
-require('!style!css!jsoneditor/dist/jsoneditor.css');
-require('!style!css!../jsoneditor.css');
-
 
 interface JsonEditorProps {
     json: Object | Array<any>
@@ -67,7 +64,7 @@ export default class JsonEditor extends React.Component<JsonEditorProps, any> {
 
     render() {
         return (
-            <div ref={(ref) => { this.editorRef = ref; } } />
+            <div ref={(ref) => { this.editorRef = ref; }} />
         );
     }
 }

@@ -3,7 +3,8 @@ import * as Redux from 'redux';
 
 import { Provider } from 'react-redux'
 import { Router, Route, hashHistory } from 'react-router'
-import { syncHistoryWithStore, routerMiddleware, routerReducer, ReactRouterReduxHistory } from 'react-router-redux'
+import { syncHistoryWithStore, routerMiddleware, routerReducer } from 'react-router-redux'
+import { History } from 'history'
 
 import { reducers, StoreState } from "../reducers"
 import { StoreBuilder } from 'redux-ts'
@@ -13,7 +14,7 @@ import routes from '../routes'
 
 export default class RootContainer extends React.Component<any, any>{
     store: Redux.Store<StoreState>;
-    history: ReactRouterReduxHistory;
+    history: History;
 
     constructor() {
         super();
